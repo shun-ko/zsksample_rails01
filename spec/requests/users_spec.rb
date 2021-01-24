@@ -106,14 +106,28 @@ RSpec.describe '/users', type: :request do
         expect(response).to redirect_to User.last
       end
     end
-    #パラメータが不正な場合
-    #リクエストが成功すること
-    #ユーザーが登録されないこと
-    #エラーが表示されこと
+    context 'パラメータが不正な場合' do
+
+      it 'リクエストが成功すること' do
+        post users_path, params: { user: FactoryBot.attributes_for(:user, name:"") }
+        expect(response.status).to eq 200
+      end
+
+      it 'ユーザーが登録されないこと' do
+        expect do
+          post users_path, params: { user: FactoryBot.attributes_for(:user, name:"") }
+        end.to_not change(User, :count)
+      end
+
+      it 'エラーが表示されること' do
+        post users_path, params: { user: FactoryBot.attributes_for(:user, name:"") }
+        expect(response.body).to include 'prohibited this user from being saved'
+      end
+    end
   end
       
   describe 'PATCH /update' do
-    #パラメータが妥当な場合
+      #パラメータが妥当な場合
       #リクエストが成功すること
       #ユーザー名が更新されること
       #リダイレクトすること
