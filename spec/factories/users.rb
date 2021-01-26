@@ -4,3 +4,4 @@ FactoryBot.define do
       email {"hoge@example.com"}
     end
 end
+
