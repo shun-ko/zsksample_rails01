@@ -35,8 +35,6 @@ RSpec.describe '/users', type: :request do
     end
 
     context 'ユーザーが存在しない場合' do
-      # subject { -> { get user_path 1 } }
-      # it { is_expected.to raise_error ActiveRecord::RecordNotFound }
       it 'エラーが表示されること' do
         expect { get user_path 1 }.to raise_error ActiveRecord::RecordNotFound
       end
@@ -72,14 +70,11 @@ RSpec.describe '/users', type: :request do
   describe 'POST /create' do
     context 'パラメータが妥当な場合' do
       it 'リクエストが成功すること' do
-        post users_path, params: { user: FactoryBot.attributes_for(:user) } # パラメータをハッシュとして送信している
+        post users_path, params: { user: FactoryBot.attributes_for(:user) }
         expect(response.status).to eq 302
       end
 
       it 'ユーザーが登録されること' do
-        # expect do
-        #   post users_path, params: { user: FactoryBot.attributes_for(:user) }
-        # end.to change(User, :count).by(1)
         expect { post users_path, params: { user: FactoryBot.attributes_for(:user) } }.to change { User.count }.by(1)
       end
 
